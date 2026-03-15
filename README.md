@@ -6,19 +6,40 @@ AI Music Create Prompt Generator (based GUI)
 
 핵심은 **반드시 `serve.py`가 있는 프로젝트 폴더에서 실행**하는 것입니다.
 
+### 0) 먼저 프로젝트 폴더 위치 확인
+
+- 이 저장소를 내려받은(또는 압축 해제한) 실제 위치를 사용해야 합니다.
+- 예: `C:\Users\<사용자명>\Downloads\SUNO_Prompt_UX`
+
 ### 1) 프로젝트 폴더로 이동
 
 #### macOS / Linux
 ```bash
-cd /workspace/SUNO_Prompt_UX
+cd /path/to/SUNO_Prompt_UX
 ```
 
 #### Windows (PowerShell 또는 CMD)
 ```powershell
-cd C:\workspace\SUNO_Prompt_UX
+cd "C:\Users\<사용자명>\Downloads\SUNO_Prompt_UX"
 ```
 
-### 2) 서버 실행
+> `cd /workspace/SUNO_Prompt_UX` 는 일부 Linux 환경 전용 예시라서, 일반 Windows PC에서는 동작하지 않을 수 있습니다.
+
+### 2) 파일 존재 확인 (선택)
+
+#### macOS / Linux
+```bash
+ls
+```
+
+#### Windows (PowerShell 또는 CMD)
+```powershell
+dir
+```
+
+출력에 `index.html`, `serve.py`가 보이면 정상입니다.
+
+### 3) 서버 실행
 
 #### 방법 A) 권장 (`serve.py` 사용)
 ```bash
@@ -30,27 +51,29 @@ python serve.py
 python -m http.server 4173
 ```
 
-### 3) 브라우저에서 접속
+### 4) 브라우저에서 접속
 
 - <http://localhost:4173/index.html>
 
-## Windows에서 `serve.py` 파일을 못 찾는 오류가 날 때
+## Windows에서 자주 나는 오류와 해결
 
-아래 오류는 **현재 폴더가 프로젝트 폴더가 아닐 때** 주로 발생합니다.
-
+### 오류 1)
 ```text
-python.exe: can't open file 'C:\workspace\SUNO_Prompt_UX\serve.py': [Errno 2] No such file or directory
+cd /workspace/SUNO_Prompt_UX
+지정된 경로를 찾을 수 없습니다.
 ```
+원인: Linux 경로를 Windows에서 사용함.
+해결: 본인 PC의 실제 경로로 `cd` 하세요.
 
-확인 순서:
-
-1. 현재 경로 확인
-   - PowerShell: `pwd`
-   - CMD: `cd`
-2. 파일 존재 확인
-   - `dir serve.py`
-3. `serve.py`가 보이는 폴더에서 다시 실행
-   - `python serve.py`
+### 오류 2)
+```text
+python.exe: can't open file '...\serve.py': [Errno 2] No such file or directory
+```
+원인: 현재 폴더가 프로젝트 폴더가 아님.
+해결:
+1. 현재 경로 확인 (`pwd` 또는 `cd`)
+2. `dir serve.py`로 파일 확인
+3. `serve.py`가 있는 폴더에서 `python serve.py` 실행
 
 ## UI가 안 보일 때 체크리스트
 
