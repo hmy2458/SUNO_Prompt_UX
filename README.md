@@ -2,7 +2,19 @@
 
 AI Music Create Prompt Generator (based GUI)
 
-## 실행 방법 (로컬)
+## GitHub에서 바로 실행 (GitHub Pages)
+
+1. GitHub 저장소로 푸시합니다.
+2. 저장소 **Settings → Pages**로 이동합니다.
+3. **Build and deployment**에서 Source를 **Deploy from a branch**로 선택합니다.
+4. Branch를 `main`(또는 사용하는 기본 브랜치), 폴더를 `/ (root)`로 선택 후 저장합니다.
+5. 발급된 Pages URL로 접속하면 `index.html`이 기본 페이지로 열립니다.
+
+예: `https://<github-username>.github.io/<repo-name>/`
+
+---
+
+## 로컬 실행 방법
 
 핵심은 **반드시 `serve.py`가 있는 프로젝트 폴더에서 실행**하는 것입니다.
 
@@ -81,13 +93,14 @@ python.exe: can't open file '...\serve.py': [Errno 2] No such file or directory
 - 서버를 프로젝트 바깥 폴더에서 실행하면 `index.html` 대신 다른 경로가 열릴 수 있습니다.
 - 이미 4173 포트를 다른 프로세스가 사용 중이면 서버가 정상 시작되지 않을 수 있습니다.
 
-## 가사 생성 기능 사용 전 설정
+## 가사 생성 기능 사용 전 설정 (필수)
 
-`index.html` 파일의 `apiKey` 값을 본인 Gemini API 키로 변경해야 가사 생성 버튼이 동작합니다.
+가사 생성은 코드 수정이 아니라, 페이지 상단의 **Gemini API 키 입력란**에 직접 입력 후 **키 저장** 버튼을 누르면 됩니다.
 
-```js
-const apiKey = 'YOUR_GEMINI_API_KEY_HERE';
-```
+- 키는 브라우저의 `localStorage`에만 저장됩니다.
+- 저장 후 `가사생성` 버튼이 동작합니다.
+
+> 이전처럼 `index.html` 내부 코드를 직접 수정할 필요가 없습니다.
 
 ## Notes
 
