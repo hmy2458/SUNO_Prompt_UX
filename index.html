@@ -358,9 +358,18 @@
             </section>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button onclick="generatePromptOnly()" id="generatePromptBtn" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 py-5 rounded-2xl font-bold text-xl shadow-2xl transform active:scale-[0.98] transition-all">
-                    스타일 프롬프트 생성
-                </button>
+                <div class="space-y-2">
+                    <button onclick="generatePromptOnly()" id="generatePromptBtn" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 py-5 rounded-2xl font-bold text-xl shadow-2xl transform active:scale-[0.98] transition-all">
+                        스타일 프롬프트 생성
+                    </button>
+                    <div class="glass-panel p-3 rounded-xl">
+                        <label for="promptMode" class="text-xs text-slate-300 block mb-1">Prompt Mode</label>
+                        <select id="promptMode" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm outline-none focus:ring-2 focus:ring-cyan-500">
+                            <option value="SUNO_STYLE">SUNO STYLE</option>
+                        </select>
+                        <p class="text-[11px] text-slate-400 mt-1">선택값을 Gemini에 입력해 SUNO용 최적화 프롬프트를 생성합니다. (700자 미만)</p>
+                    </div>
+                </div>
                 <button onclick="generateLyricsOnly()" id="generateLyricsBtn" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-5 rounded-2xl font-bold text-xl shadow-2xl transform active:scale-[0.98] transition-all">
                     가사생성
                 </button>
@@ -370,11 +379,12 @@
                 <div class="glass-panel p-6 rounded-2xl border-cyan-500/30">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-widest flex items-center gap-2">
-                            <i class="fas fa-terminal"></i> Suno Style Prompt
+                            <i class="fas fa-terminal"></i> Music Style Selection
                         </h3>
                         <button onclick="copyToClipboard('finalPrompt')" class="text-xs px-3 py-1 bg-white/10 rounded-full hover:bg-white/20 transition">복사</button>
                     </div>
                     <textarea id="finalPrompt" readonly class="w-full h-32 bg-slate-900/50 rounded-xl p-3 border border-slate-700 focus:ring-0 text-sm text-cyan-100 resize-none custom-scrollbar leading-relaxed"></textarea>
+                    <p id="promptCharCount" class="text-right text-xs text-slate-400 mt-2">0자</p>
                 </div>
 
                 <div class="glass-panel p-6 rounded-2xl relative border-blue-500/30">
@@ -518,10 +528,111 @@
             };
         }
 
-        function generatePromptOnly() {
+        function updatePromptCharCount(text) {
+            document.getElementById('promptCharCount').innerText = `${text.length}자`;
+        }
+
+        async function generatePromptOnly() {
             const { finalPrompt } = buildFinalPrompt();
-            document.getElementById('finalPrompt').value = finalPrompt;
+            const mode = document.getElementById('promptMode').value;
+            const promptArea = document.getElementById('finalPrompt');
+            const promptBtn = document.getElementById('generatePromptBtn');
+            const lyricsBtn = document.getElementById('generateLyricsBtn');
+
             document.getElementById('resultSection').classList.remove('hidden');
+
+            if (mode === 'SUNO_STYLE') {
+                const apiKey = getApiKey();
+                if (!apiKey) {
+                    showMessage('SUNO STYLE 생성에는 Gemini API 키 입력이 필요합니다.');
+                    promptArea.value = '오류: API 키를 입력한 뒤 다시 시도해 주세요.';
+                    updatePromptCharCount(promptArea.value);
+                    return;
+                }
+
+                promptArea.value = 'SUNO STYLE 프롬프트 생성 중...';
+                updatePromptCharCount(promptArea.value);
+                promptBtn.disabled = true;
+                lyricsBtn.disabled = true;
+
+                try {
+                    const optimized = await fetchOptimizedSunoPrompt(finalPrompt, apiKey);
+                    promptArea.value = optimized;
+                    updatePromptCharCount(optimized);
+                } catch (err) {
+                    const msg = `생성 실패: ${err?.message || String(err)}`;
+                    promptArea.value = msg;
+                    updatePromptCharCount(msg);
+                } finally {
+                    promptBtn.disabled = false;
+                    lyricsBtn.disabled = false;
+                }
+
+                return;
+            }
+
+            promptArea.value = finalPrompt;
+            updatePromptCharCount(finalPrompt);
+        }
+
+        async function fetchOptimizedSunoPrompt(basePrompt, apiKey) {
+            const systemPrompt = `
+You are an expert SUNO music prompt optimizer.
+Rewrite the user's selected music attributes into one highly effective SUNO prompt.
+Requirements:
+- Keep it under 700 Korean characters.
+- Output only the final prompt text.
+- Make it vivid, specific, and production-ready for SUNO.
+- Include mood, genre, tempo, instrumentation, and atmosphere when available.
+            `.trim();
+
+            const userQuery = `
+Selected attributes:
+${basePrompt}
+            `.trim();
+
+            const response = await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        systemInstruction: {
+                            parts: [{ text: systemPrompt }]
+                        },
+                        contents: [
+                            {
+                                role: 'user',
+                                parts: [{ text: userQuery }]
+                            }
+                        ],
+                        generationConfig: {
+                            temperature: 0.8,
+                            topP: 0.95,
+                            maxOutputTokens: 800
+                        }
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data?.error?.message || `HTTP ${response.status}`);
+            }
+
+            const text = data?.candidates?.[0]?.content?.parts
+                ?.map(part => part.text || '')
+                .join('')
+                .trim();
+
+            if (!text) {
+                throw new Error('모델이 비어 있는 응답을 반환했습니다.');
+            }
+
+            return text.slice(0, 699);
         }
 
         async function generateLyricsOnly() {
@@ -536,6 +647,7 @@
             const { finalPrompt, core, mood } = buildFinalPrompt();
 
             document.getElementById('finalPrompt').value = finalPrompt;
+            updatePromptCharCount(finalPrompt);
             document.getElementById('resultSection').classList.remove('hidden');
 
             await fetchLyrics(finalPrompt, core, mood, apiKey);

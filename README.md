@@ -107,6 +107,13 @@ python.exe: can't open file '...\serve.py': [Errno 2] No such file or directory
 - Main UI is implemented in `index.html`.
 - This project is a static page, so no build step is required.
 
+## SUNO STYLE 프롬프트 생성 기능
+
+- `스타일 프롬프트 생성` 아래 `Prompt Mode`에서 **SUNO STYLE**을 선택하면,
+  선택한 옵션 값을 Gemini LLM 입력으로 사용해 SUNO용 최적화 프롬프트를 생성합니다.
+- 생성 결과는 **700자 미만**으로 제한됩니다.
+- 결과 텍스트 아래에 **글자수(예: 412자)**가 표시됩니다.
+
 ## GitHub에 다시 패치 요청(PR)하는 방법
 
 아래 순서대로 하면 GitHub에서 다시 리퀘스트할 수 있습니다.
