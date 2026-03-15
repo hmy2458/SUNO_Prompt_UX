@@ -346,6 +346,17 @@
         </div>
 
         <div class="mt-8 space-y-6">
+            <section class="glass-panel p-4 rounded-2xl">
+                <h3 class="text-sm font-bold text-indigo-300 mb-2 flex items-center gap-2">
+                    <i class="fas fa-key"></i> Gemini API 키 입력
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-2 items-center">
+                    <input id="apiKeyInput" type="password" placeholder="여기에 Gemini API 키를 입력하세요" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button type="button" onclick="saveApiKey()" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold">키 저장</button>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-2">입력한 키는 브라우저 로컬 저장소(localStorage)에만 저장됩니다.</p>
+            </section>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <button onclick="generatePromptOnly()" id="generatePromptBtn" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 py-5 rounded-2xl font-bold text-xl shadow-2xl transform active:scale-[0.98] transition-all">
                     스타일 프롬프트 생성
@@ -390,8 +401,34 @@
     </div>
 
     <script>
-        // 보안을 위해 실제 서비스에서는 서버/환경변수로 관리하세요.
-        const apiKey = 'YOUR_GEMINI_API_KEY_HERE';
+        const API_KEY_STORAGE_KEY = 'gemini_api_key';
+
+        function saveApiKey() {
+            const key = document.getElementById('apiKeyInput').value.trim();
+            if (!key) {
+                showMessage('API 키를 입력해 주세요.');
+                return;
+            }
+
+            localStorage.setItem(API_KEY_STORAGE_KEY, key);
+            showMessage('API 키가 저장되었습니다.');
+        }
+
+        function getApiKey() {
+            const inputKey = document.getElementById('apiKeyInput').value.trim();
+            if (inputKey) {
+                return inputKey;
+            }
+
+            return localStorage.getItem(API_KEY_STORAGE_KEY) || '';
+        }
+
+        function hydrateApiKeyInput() {
+            const saved = localStorage.getItem(API_KEY_STORAGE_KEY) || '';
+            if (saved) {
+                document.getElementById('apiKeyInput').value = saved;
+            }
+        }
 
         document.querySelectorAll('.tag-chip').forEach(chip => {
             chip.addEventListener('click', () => {
@@ -488,7 +525,8 @@
         }
 
         async function generateLyricsOnly() {
-            if (!apiKey || apiKey === 'YOUR_GEMINI_API_KEY_HERE') {
+            const apiKey = getApiKey();
+            if (!apiKey) {
                 showMessage('Gemini API 키를 먼저 입력해 주세요.');
                 document.getElementById('resultSection').classList.remove('hidden');
                 document.getElementById('finalLyrics').value = '오류: API 키가 설정되지 않았습니다.';
@@ -500,10 +538,10 @@
             document.getElementById('finalPrompt').value = finalPrompt;
             document.getElementById('resultSection').classList.remove('hidden');
 
-            await fetchLyrics(finalPrompt, core, mood);
+            await fetchLyrics(finalPrompt, core, mood, apiKey);
         }
 
-        async function fetchLyrics(musicStyle, genre, mood) {
+        async function fetchLyrics(musicStyle, genre, mood, apiKey) {
             const loader = document.getElementById('loadingLyrics');
             const lyricsArea = document.getElementById('finalLyrics');
             const promptBtn = document.getElementById('generatePromptBtn');
@@ -629,6 +667,8 @@ ${musicStyle}
                 lyricsBtn.disabled = false;
             }
         }
+
+        hydrateApiKeyInput();
     </script>
 </body>
 </html>
