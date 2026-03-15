@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suno AI Prompt & Lyrics Master Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .tag-chip {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .tag-chip.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        input[type="range"] {
+            accent-color: #3b82f6;
+        }
+
+        .category-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            margin-top: 1rem;
+            display: block;
+        }
+
+        .menu-emphasis {
+            color: #ef4444;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .instrument-subtitle {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                Suno AI Studio
+            </h1>
+            <p class="text-slate-400">정교한 옵션 선택으로 음악 프롬프트와 가사를 생성합니다.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 space-y-6">
+                <section class="glass-panel p-5 rounded-2xl">
+                    <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <i class="fas fa-compact-disc text-blue-400"></i> 장르 및 스타일
+                    </h2>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="menu-emphasis block mb-2">Core Genre (필수)</label>
+                            <select id="coreGenre" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option value="Hip Hop">Hip Hop</option>
+                                <option value="Jazz">Jazz</option>
+                                <option value="Pop">Pop</option>
+                                <option value="R&B">R&B</option>
+                                <option value="Electronic">Electronic</option>
+                                <option value="Rock">Rock</option>
+                                <option value="Reggae">Reggae</option>
+                                <option value="Funk / Disco">Funk / Disco</option>
+                                <option value="Classical">Classical</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="menu-emphasis block mb-2">Style / Sound Approach</label>
+                            <select id="styleGenre" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option value="">스타일 선택 안함</option>
+                                <option value="Latin Jazz">Latin Jazz</option>
+                                <option value="Modern Jazz">Modern Jazz</option>
+                                <option value="Boom Bap">Boom Bap</option>
+                                <option value="Trap">Trap</option>
+                                <option value="Drill">Drill</option>
+                                <option value="Lofi">Lofi</option>
+                                <option value="Synthpop">Synthpop</option>
+                                <option value="Electropop">Electropop</option>
+                                <option value="Dance Pop">Dance Pop</option>
+                                <optgroup label="House Music">
+                                    <option value="Deep House">Deep House</option>
+                                    <option value="Tech House">Tech House</option>
+                                    <option value="Future House">Future House</option>
+                                    <option value="Tropical House">Tropical House</option>
+                                    <option value="House">General House</option>
+                                </optgroup>
+                                <option value="Techno">Techno</option>
+                                <option value="Swing">Swing</option>
+                                <option value="Bossa Nova">Bossa Nova</option>
+                                <option value="Future Bass">Future Bass</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="menu-emphasis block mb-2">Lyrical / Aesthetic Tag</label>
+                            <div class="flex flex-wrap gap-2 mb-3" id="aestheticChips">
+                                <span class="tag-chip px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs" data-val="Gangsta Rap">Gangsta Rap</span>
+                                <span class="tag-chip px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs" data-val="Alternative">Alternative</span>
+                                <span class="tag-chip px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs" data-val="Old School">Old School</span>
+                                <span class="tag-chip px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs" data-val="City Pop Aesthetic">City Pop</span>
+                                <span class="tag-chip px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs" data-val="Motown Style">Motown</span>
+                                <span class="tag-chip px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs" data-val="K-Pop">K-Pop</span>
+                                <span class="tag-chip px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs" data-val="J-Pop">J-Pop</span>
+                            </div>
+                            <input type="text" id="customAesthetic" placeholder="직접 입력 가능 (쉼표로 구분)" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="glass-panel p-5 rounded-2xl">
+                    <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
+                        <i class="fas fa-wind text-cyan-400"></i> 분위기 (Ambience)
+                    </h2>
+                    <p class="text-[10px] text-slate-500 mb-4">최대 3개 선택 권장</p>
+
+                    <div class="space-y-4 text-sm h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                        <div>
+                            <span class="category-title mt-0 menu-emphasis">Nature (Background Texture)</span>
+                            <div class="grid grid-cols-3 gap-2">
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Birdsong" class="ambience-cb"> Birdsong</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Waves" class="ambience-cb"> Waves</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Rain" class="ambience-cb"> Rain</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Thunder" class="ambience-cb"> Thunder</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Forest" class="ambience-cb"> Forest</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Campfire" class="ambience-cb"> Campfire</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="category-title menu-emphasis">Urban / Space (Sonic Coloration)</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Cityscape" class="ambience-cb"> Cityscape</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Crowd noise" class="ambience-cb"> Crowd</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Room ambience" class="ambience-cb"> Room ambience</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="category-title menu-emphasis">Media / Texture (Light Layer)</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Vinyl crackle" class="ambience-cb"> Vinyl</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Tape Hiss" class="ambience-cb"> Tape Hiss</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Cassette hiss" class="ambience-cb"> Cassette hiss</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="White noise" class="ambience-cb"> Noise</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="category-title menu-emphasis">Groove</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Lay-back" class="ambience-cb"> Lay-back</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Push driving feel" class="ambience-cb"> Push (Driving)</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Syncopation" class="ambience-cb"> Syncopation</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Off-beat" class="ambience-cb"> Off-beat</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Ghost Note" class="ambience-cb"> Ghost Note</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Polyrhythm" class="ambience-cb"> Polyrhythm</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Swing feel" class="ambience-cb"> Swing Feel</label>
+                                <label class="flex items-center gap-1.5"><input type="checkbox" value="Displacement" class="ambience-cb"> Displacement</label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="lg:col-span-7 space-y-6">
+                <section class="glass-panel p-5 rounded-2xl">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <i class="fas fa-mask text-pink-400"></i> 무드 (Mood)
+                            </h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <select id="moodType" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 outline-none">
+                                        <option>Joyful</option>
+                                        <option>Sad</option>
+                                        <option>Calm</option>
+                                        <option>Energetic</option>
+                                        <option>Aggressive</option>
+                                        <option>Romantic</option>
+                                        <option>Nostalgic</option>
+                                        <option>Dark</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-xs text-slate-500 block mb-1">Intensity</label>
+                                    <input type="range" id="moodIntensity" min="1" max="3" step="1" value="2" class="w-full">
+                                    <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+                                        <span>LOW</span><span>MEDIUM</span><span>HIGH</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                                <i class="fas fa-music text-orange-400"></i> 템포 (Tempo)
+                            </h2>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button type="button" onclick="setTempo('Slow (60-80 BPM)')" class="tempo-btn bg-slate-800 border border-slate-700 py-2 rounded text-xs hover:bg-blue-600 transition">Slow</button>
+                                <button type="button" onclick="setTempo('Mid (90-110 BPM)')" class="tempo-btn bg-slate-800 border border-slate-700 py-2 rounded text-xs hover:bg-blue-600 transition">Mid</button>
+                                <button type="button" onclick="setTempo('Fast (120-140 BPM)')" class="tempo-btn bg-slate-800 border border-slate-700 py-2 rounded text-xs hover:bg-blue-600 transition">Fast</button>
+                                <button type="button" onclick="setTempo('Very Fast (160-180 BPM)')" class="tempo-btn bg-slate-800 border border-slate-700 py-2 rounded text-xs hover:bg-blue-600 transition">Very Fast</button>
+                            </div>
+                            <input type="text" id="customTempo" placeholder="Advanced (예: 128 BPM)" class="w-full mt-2 bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm outline-none">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="glass-panel p-5 rounded-2xl">
+                    <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <i class="fas fa-drum text-yellow-400"></i> 악기 구성 (Instruments)
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                        <div class="space-y-3">
+                            <span class="category-title mt-0 menu-emphasis">리듬악기</span>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="instrument-subtitle">Rhythm & Bass</label>
+                                    <div class="grid grid-cols-2 gap-1.5">
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Drums" class="inst-cb"> Drums</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Electric Bass" class="inst-cb"> Bass</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="instrument-subtitle">Percussions</label>
+                                    <div class="grid grid-cols-2 gap-1.5">
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Congas" class="inst-cb"> Congas</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Bongos" class="inst-cb"> Bongos</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Shaker" class="inst-cb"> Shaker</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Tambourine" class="inst-cb"> Tambourine</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Cajon" class="inst-cb"> Cajon</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="instrument-subtitle">건반 및 현악기</label>
+                                    <div class="grid grid-cols-2 gap-1.5">
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Rhythm Guitar" class="inst-cb"> Rhythm Guitar</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Clavinet" class="inst-cb"> Clavinet</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="instrument-subtitle">전자 및 특수 악기</label>
+                                    <div class="grid grid-cols-2 gap-1.5">
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Drum Machine" class="inst-cb"> Drum Machine</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Sampler" class="inst-cb"> Sampler</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Cowbell" class="inst-cb"> Cowbell</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Woodblock" class="inst-cb"> Woodblock</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <span class="category-title mt-0 menu-emphasis">하이라이트 악기 (Highlight)</span>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="instrument-subtitle">Strings</label>
+                                    <div class="grid grid-cols-3 gap-1.5">
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Violin" class="inst-cb"> Violin</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Viola" class="inst-cb"> Viola</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Cello" class="inst-cb"> Cello</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="instrument-subtitle">Brass</label>
+                                    <div class="grid grid-cols-2 gap-1.5">
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Trumpet" class="inst-cb"> Trumpet</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Trombone" class="inst-cb"> Trombone</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="instrument-subtitle">Woodwind</label>
+                                    <div class="grid grid-cols-2 gap-1.5">
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Saxophone" class="inst-cb"> Saxophone</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Clarinet" class="inst-cb"> Clarinet</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Flute" class="inst-cb"> Flute</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Oboe" class="inst-cb"> Oboe</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="instrument-subtitle">Harmony</label>
+                                    <div class="grid grid-cols-3 gap-1.5">
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Piano" class="inst-cb"> Piano</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Organ" class="inst-cb"> Organ</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Acoustic Guitar" class="inst-cb"> Guitar</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="instrument-subtitle">Special</label>
+                                    <div class="grid grid-cols-2 gap-1.5">
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Harmonica" class="inst-cb"> Harmonica</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Accordion" class="inst-cb"> Accordion</label>
+                                        <label class="flex items-center gap-1.5"><input type="checkbox" value="Vibraphone" class="inst-cb"> Vibraphone</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="mt-8 space-y-6">
+            <section class="glass-panel p-4 rounded-2xl">
+                <h3 class="text-sm font-bold text-indigo-300 mb-2 flex items-center gap-2">
+                    <i class="fas fa-key"></i> Gemini API 키 입력
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-2 items-center">
+                    <input id="apiKeyInput" type="password" placeholder="여기에 Gemini API 키를 입력하세요" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button type="button" onclick="saveApiKey()" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold">키 저장</button>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-2">입력한 키는 브라우저 로컬 저장소(localStorage)에만 저장됩니다.</p>
+            </section>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button onclick="generatePromptOnly()" id="generatePromptBtn" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 py-5 rounded-2xl font-bold text-xl shadow-2xl transform active:scale-[0.98] transition-all">
+                    스타일 프롬프트 생성
+                </button>
+                <button onclick="generateLyricsOnly()" id="generateLyricsBtn" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-5 rounded-2xl font-bold text-xl shadow-2xl transform active:scale-[0.98] transition-all">
+                    가사생성
+                </button>
+            </div>
+
+            <div id="resultSection" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-panel p-6 rounded-2xl border-cyan-500/30">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fas fa-terminal"></i> Suno Style Prompt
+                        </h3>
+                        <button onclick="copyToClipboard('finalPrompt')" class="text-xs px-3 py-1 bg-white/10 rounded-full hover:bg-white/20 transition">복사</button>
+                    </div>
+                    <textarea id="finalPrompt" readonly class="w-full h-32 bg-slate-900/50 rounded-xl p-3 border border-slate-700 focus:ring-0 text-sm text-cyan-100 resize-none custom-scrollbar leading-relaxed"></textarea>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl relative border-blue-500/30">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-sm font-bold text-blue-400 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fas fa-music"></i> AI Suggested Lyrics
+                        </h3>
+                        <button onclick="copyToClipboard('finalLyrics')" class="text-xs px-3 py-1 bg-white/10 rounded-full hover:bg-white/20 transition">복사</button>
+                    </div>
+
+                    <div id="loadingLyrics" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-slate-900/90 rounded-2xl z-10">
+                        <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-cyan-500 mb-2"></div>
+                        <span class="text-xs text-slate-400">가사 쓰는 중...</span>
+                    </div>
+
+                    <textarea id="finalLyrics" readonly class="w-full h-80 bg-slate-900/50 rounded-xl p-3 border border-slate-700 focus:ring-0 text-sm leading-relaxed custom-scrollbar resize-none"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 px-8 py-4 rounded-full bg-cyan-600 text-white shadow-2xl opacity-0 transition-opacity pointer-events-none z-50 font-bold">
+        복사되었습니다!
+    </div>
+
+    <script>
+        const API_KEY_STORAGE_KEY = 'gemini_api_key';
+
+        function saveApiKey() {
+            const key = document.getElementById('apiKeyInput').value.trim();
+            if (!key) {
+                showMessage('API 키를 입력해 주세요.');
+                return;
+            }
+
+            localStorage.setItem(API_KEY_STORAGE_KEY, key);
+            showMessage('API 키가 저장되었습니다.');
+        }
+
+        function getApiKey() {
+            const inputKey = document.getElementById('apiKeyInput').value.trim();
+            if (inputKey) {
+                return inputKey;
+            }
+
+            return localStorage.getItem(API_KEY_STORAGE_KEY) || '';
+        }
+
+        function hydrateApiKeyInput() {
+            const saved = localStorage.getItem(API_KEY_STORAGE_KEY) || '';
+            if (saved) {
+                document.getElementById('apiKeyInput').value = saved;
+            }
+        }
+
+        document.querySelectorAll('.tag-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                chip.classList.toggle('active');
+            });
+        });
+
+        function setupLimit(selector, limit, name) {
+            document.querySelectorAll(selector).forEach(cb => {
+                cb.addEventListener('change', () => {
+                    const checked = document.querySelectorAll(`${selector}:checked`);
+                    if (checked.length > limit) {
+                        cb.checked = false;
+                        showMessage(`${name}은(는) 최대 ${limit}개까지 선택 가능합니다.`);
+                    }
+                });
+            });
+        }
+
+        setupLimit('.ambience-cb', 3, '분위기/Groove');
+        setupLimit('.inst-cb', 6, '악기');
+
+        function setTempo(val) {
+            document.getElementById('customTempo').value = val;
+        }
+
+        function showMessage(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+
+        async function copyToClipboard(id) {
+            const el = document.getElementById(id);
+            try {
+                await navigator.clipboard.writeText(el.value);
+                showMessage('클립보드에 복사되었습니다.');
+            } catch (err) {
+                el.select();
+                document.execCommand('copy');
+                showMessage('클립보드에 복사되었습니다.');
+            }
+        }
+
+        function buildFinalPrompt() {
+            const core = document.getElementById('coreGenre').value;
+            const style = document.getElementById('styleGenre').value;
+
+            const activeChips = Array.from(document.querySelectorAll('.tag-chip.active'))
+                .map(c => c.dataset.val);
+
+            const customAesthetic = document.getElementById('customAesthetic').value.trim();
+            const aesthetic = [...activeChips];
+            if (customAesthetic) {
+                aesthetic.push(...customAesthetic.split(',').map(s => s.trim()).filter(Boolean));
+            }
+
+            const ambiences = Array.from(document.querySelectorAll('.ambience-cb:checked'))
+                .map(c => c.value);
+
+            const mood = document.getElementById('moodType').value;
+            const intensityVal = Number(document.getElementById('moodIntensity').value);
+            const intensity =
+                intensityVal === 1 ? 'Low Intensity' :
+                intensityVal === 3 ? 'High Intensity' :
+                'Medium Intensity';
+
+            const tempo = document.getElementById('customTempo').value.trim() || 'Mid-tempo';
+
+            const instruments = Array.from(document.querySelectorAll('.inst-cb:checked'))
+                .map(c => c.value);
+
+            const promptParts = [core];
+            if (style) promptParts.push(style);
+            if (aesthetic.length) promptParts.push(...aesthetic);
+            if (ambiences.length) promptParts.push(...ambiences);
+            promptParts.push(mood, intensity, tempo);
+            if (instruments.length) promptParts.push(`featuring ${instruments.join(', ')}`);
+
+            return {
+                finalPrompt: promptParts.join(', '),
+                core,
+                mood
+            };
+        }
+
+        function generatePromptOnly() {
+            const { finalPrompt } = buildFinalPrompt();
+            document.getElementById('finalPrompt').value = finalPrompt;
+            document.getElementById('resultSection').classList.remove('hidden');
+        }
+
+        async function generateLyricsOnly() {
+            const apiKey = getApiKey();
+            if (!apiKey) {
+                showMessage('Gemini API 키를 먼저 입력해 주세요.');
+                document.getElementById('resultSection').classList.remove('hidden');
+                document.getElementById('finalLyrics').value = '오류: API 키가 설정되지 않았습니다.';
+                return;
+            }
+
+            const { finalPrompt, core, mood } = buildFinalPrompt();
+
+            document.getElementById('finalPrompt').value = finalPrompt;
+            document.getElementById('resultSection').classList.remove('hidden');
+
+            await fetchLyrics(finalPrompt, core, mood, apiKey);
+        }
+
+        async function fetchLyrics(musicStyle, genre, mood, apiKey) {
+            const loader = document.getElementById('loadingLyrics');
+            const lyricsArea = document.getElementById('finalLyrics');
+            const promptBtn = document.getElementById('generatePromptBtn');
+            const lyricsBtn = document.getElementById('generateLyricsBtn');
+
+            loader.classList.remove('hidden');
+            promptBtn.disabled = true;
+            lyricsBtn.disabled = true;
+            lyricsArea.value = '';
+
+            const systemPrompt = `
+You are an expert Korean songwriter.
+Write complete song lyrics in Korean.
+You may include only a few short English hook words if they fit naturally.
+
+Required structure:
+[Verse 1] - 4 lines
+[Chorus] - 4 lines
+[Verse 2] - 4 lines
+[Chorus] - 4 lines
+[Bridge] - 4 lines
+[Chorus] - 4 lines
+[Outro] - 2 to 4 lines
+
+Requirements:
+- Mood: ${mood}
+- Genre: ${genre}
+- Output lyrics only
+- Do not add explanations
+- Make the chorus catchy and memorable
+- Keep the wording singable and natural
+- Complete all sections without omission
+            `.trim();
+
+            const userQuery = `
+Write song lyrics for this music style:
+${musicStyle}
+            `.trim();
+
+            const maxRetries = 3;
+            let lastErrorMessage = '알 수 없는 오류가 발생했습니다.';
+
+            try {
+                for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                    try {
+                        const response = await fetch(
+                            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+                            {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    systemInstruction: {
+                                        parts: [{ text: systemPrompt }]
+                                    },
+                                    contents: [
+                                        {
+                                            role: 'user',
+                                            parts: [{ text: userQuery }]
+                                        }
+                                    ],
+                                    generationConfig: {
+                                        temperature: 0.9,
+                                        topP: 0.95,
+                                        maxOutputTokens: 3000
+                                    }
+                                })
+                            }
+                        );
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                            const apiMessage =
+                                data?.error?.message ||
+                                `HTTP ${response.status} ${response.statusText}`;
+                            throw new Error(apiMessage);
+                        }
+
+                        const candidate = data?.candidates?.[0];
+                        const text = candidate?.content?.parts
+                            ?.map(part => part.text || '')
+                            .join('')
+                            .trim();
+
+                        const finishReason = candidate?.finishReason;
+                        const blockReason = data?.promptFeedback?.blockReason;
+
+                        if (blockReason) {
+                            lyricsArea.value = `요청이 차단되었습니다. 사유: ${blockReason}`;
+                            return;
+                        }
+
+                        if (text) {
+                            if (finishReason === 'MAX_TOKENS') {
+                                lyricsArea.value = `${text}\n\n[안내] 출력 길이 제한으로 가사가 일부 잘렸습니다. maxOutputTokens 값을 더 늘려 주세요.`;
+                            } else {
+                                lyricsArea.value = text;
+                            }
+                            return;
+                        }
+
+                        if (finishReason) {
+                            throw new Error(`응답이 비어 있습니다. finishReason: ${finishReason}`);
+                        }
+
+                        throw new Error('모델이 비어 있는 응답을 반환했습니다.');
+                    } catch (err) {
+                        lastErrorMessage = err?.message || String(err);
+
+                        if (attempt < maxRetries) {
+                            const delay = 1000 * attempt;
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                        }
+                    }
+                }
+
+                lyricsArea.value = `가사 생성 실패: ${lastErrorMessage}`;
+            } finally {
+                loader.classList.add('hidden');
+                promptBtn.disabled = false;
+                lyricsBtn.disabled = false;
+            }
+        }
+
+        hydrateApiKeyInput();
+    </script>
+</body>
+</html>
