@@ -345,8 +345,16 @@
             </div>
         </div>
 
-        <div class="mt-8 space-y-6">
-            <section class="glass-panel p-4 rounded-2xl">
+        <div class="mt-8 space-y-5 glass-panel p-5 rounded-2xl">
+            <section>
+                <div class="bg-cyan-600/90 text-white text-center rounded-md py-1.5 text-2xl font-bold tracking-wide mb-3">선택한 음악 생성 스타일</div>
+                <div class="flex justify-end mb-2">
+                    <button onclick="copyToClipboard('selectedStyleOutput')" class="text-sm px-4 py-1 bg-white/90 text-slate-900 rounded-md hover:bg-white transition">복사</button>
+                </div>
+                <textarea id="selectedStyleOutput" readonly class="w-full h-32 bg-slate-100 text-slate-900 rounded-xl p-3 border border-slate-300 text-sm resize-none custom-scrollbar"></textarea>
+            </section>
+
+            <section class="glass-panel p-4 rounded-xl">
                 <h3 class="text-sm font-bold text-indigo-300 mb-2 flex items-center gap-2">
                     <i class="fas fa-key"></i> Gemini API 키 입력
                 </h3>
@@ -358,32 +366,26 @@
             </section>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button onclick="generatePromptOnly()" id="generatePromptBtn" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 py-5 rounded-2xl font-bold text-xl shadow-2xl transform active:scale-[0.98] transition-all">
-                    스타일 프롬프트 생성
+                <button onclick="generatePromptOnly()" id="generatePromptBtn" class="w-full bg-cyan-600 hover:bg-cyan-500 py-2 rounded-lg font-bold text-3xl shadow-lg transition-all">
+                    Style Prompt 생성
                 </button>
-                <button onclick="generateLyricsOnly()" id="generateLyricsBtn" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-5 rounded-2xl font-bold text-xl shadow-2xl transform active:scale-[0.98] transition-all">
+                <button onclick="generateLyricsOnly()" id="generateLyricsBtn" class="w-full bg-cyan-600 hover:bg-cyan-500 py-2 rounded-lg font-bold text-3xl shadow-lg transition-all">
                     가사생성
                 </button>
             </div>
 
-            <div id="resultSection" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass-panel p-6 rounded-2xl border-cyan-500/30">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-widest flex items-center gap-2">
-                            <i class="fas fa-terminal"></i> Music Style Selection
-                        </h3>
-                        <button onclick="copyToClipboard('finalPrompt')" class="text-xs px-3 py-1 bg-white/10 rounded-full hover:bg-white/20 transition">복사</button>
+            <div id="resultSection" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <div class="flex justify-end">
+                        <button onclick="copyToClipboard('finalPrompt')" class="text-sm px-4 py-1 bg-white/90 text-slate-900 rounded-md hover:bg-white transition">복사</button>
                     </div>
-                    <textarea id="finalPrompt" readonly class="w-full h-32 bg-slate-900/50 rounded-xl p-3 border border-slate-700 focus:ring-0 text-sm text-cyan-100 resize-none custom-scrollbar leading-relaxed"></textarea>
-                    <p id="promptCharCount" class="text-right text-xs text-slate-400 mt-2">0자</p>
+                    <textarea id="finalPrompt" readonly class="w-full h-56 bg-slate-100 text-slate-900 rounded-xl p-3 border border-slate-300 text-sm resize-none custom-scrollbar"></textarea>
+                    <p id="promptCharCount" class="text-right text-3xl leading-none text-slate-300">0 / 500 chars</p>
                 </div>
 
-                <div class="glass-panel p-6 rounded-2xl relative border-blue-500/30">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-sm font-bold text-blue-400 uppercase tracking-widest flex items-center gap-2">
-                            <i class="fas fa-music"></i> AI Suggested Lyrics
-                        </h3>
-                        <button onclick="copyToClipboard('finalLyrics')" class="text-xs px-3 py-1 bg-white/10 rounded-full hover:bg-white/20 transition">복사</button>
+                <div class="space-y-2 relative">
+                    <div class="flex justify-end">
+                        <button onclick="copyToClipboard('finalLyrics')" class="text-sm px-4 py-1 bg-white/90 text-slate-900 rounded-md hover:bg-white transition">복사</button>
                     </div>
 
                     <div id="loadingLyrics" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-slate-900/90 rounded-2xl z-10">
@@ -391,7 +393,7 @@
                         <span class="text-xs text-slate-400">가사 쓰는 중...</span>
                     </div>
 
-                    <textarea id="finalLyrics" readonly class="w-full h-80 bg-slate-900/50 rounded-xl p-3 border border-slate-700 focus:ring-0 text-sm leading-relaxed custom-scrollbar resize-none"></textarea>
+                    <textarea id="finalLyrics" readonly class="w-full h-56 bg-slate-100 text-slate-900 rounded-xl p-3 border border-slate-300 text-sm leading-relaxed custom-scrollbar resize-none"></textarea>
                 </div>
             </div>
         </div>
@@ -520,15 +522,19 @@
         }
 
         function updatePromptCharCount(text) {
-            document.getElementById('promptCharCount').innerText = `${text.length} chars`;
+            const maxLen = 500;
+            document.getElementById('promptCharCount').innerText = `${text.length} / ${maxLen} chars`;
         }
 
         function generatePromptOnly() {
             const { finalPrompt } = buildFinalPrompt();
             const promptArea = document.getElementById('finalPrompt');
+            const selectedStyleOutput = document.getElementById('selectedStyleOutput');
+            const limitedPrompt = finalPrompt.slice(0, 500);
 
-            promptArea.value = finalPrompt;
-            updatePromptCharCount(finalPrompt);
+            selectedStyleOutput.value = finalPrompt;
+            promptArea.value = limitedPrompt;
+            updatePromptCharCount(limitedPrompt);
             document.getElementById('resultSection').classList.remove('hidden');
         }
 
@@ -543,8 +549,10 @@
 
             const { finalPrompt, core, mood } = buildFinalPrompt();
 
-            document.getElementById('finalPrompt').value = finalPrompt;
-            updatePromptCharCount(finalPrompt);
+            document.getElementById('selectedStyleOutput').value = finalPrompt;
+            const limitedPrompt = finalPrompt.slice(0, 500);
+            document.getElementById('finalPrompt').value = limitedPrompt;
+            updatePromptCharCount(limitedPrompt);
             document.getElementById('resultSection').classList.remove('hidden');
 
             await fetchLyrics(finalPrompt, core, mood, apiKey);
