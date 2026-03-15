@@ -107,6 +107,11 @@ python.exe: can't open file '...\serve.py': [Errno 2] No such file or directory
 - Main UI is implemented in `index.html`.
 - This project is a static page, so no build step is required.
 
+## 메뉴 기능
+
+- **선택한 음악 생성 스타일**: 상단 옵션에서 선택한 항목들을 문자열로 표시합니다.
+- **Style Prompt 생성**: 선택 항목을 Gemini에 전달해 SUNO용으로 최적화한 프롬프트를 생성해 출력합니다.
+
 ## Music Style Selection 출력 언어
 
 - `Music Style Selection` 결과는 **선택한 옵션 기반의 영어 문장**으로 출력됩니다.

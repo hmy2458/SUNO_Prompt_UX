@@ -526,16 +526,100 @@
             document.getElementById('promptCharCount').innerText = `${text.length} / ${maxLen} chars`;
         }
 
-        function generatePromptOnly() {
+        async function generatePromptOnly() {
             const { finalPrompt } = buildFinalPrompt();
             const promptArea = document.getElementById('finalPrompt');
             const selectedStyleOutput = document.getElementById('selectedStyleOutput');
-            const limitedPrompt = finalPrompt.slice(0, 500);
+            const promptBtn = document.getElementById('generatePromptBtn');
+            const lyricsBtn = document.getElementById('generateLyricsBtn');
+            const apiKey = getApiKey();
 
             selectedStyleOutput.value = finalPrompt;
-            promptArea.value = limitedPrompt;
-            updatePromptCharCount(limitedPrompt);
             document.getElementById('resultSection').classList.remove('hidden');
+
+            if (!apiKey) {
+                promptArea.value = '오류: API 키를 입력한 뒤 Style Prompt 생성을 다시 시도해 주세요.';
+                updatePromptCharCount(promptArea.value);
+                showMessage('Style Prompt 생성에는 Gemini API 키가 필요합니다.');
+                return;
+            }
+
+            promptArea.value = 'Style Prompt 생성 중...';
+            updatePromptCharCount(promptArea.value);
+            promptBtn.disabled = true;
+            lyricsBtn.disabled = true;
+
+            try {
+                const optimizedPrompt = await fetchOptimizedSunoPrompt(finalPrompt, apiKey);
+                promptArea.value = optimizedPrompt;
+                updatePromptCharCount(optimizedPrompt);
+            } catch (err) {
+                const message = `생성 실패: ${err?.message || String(err)}`;
+                promptArea.value = message;
+                updatePromptCharCount(message);
+            } finally {
+                promptBtn.disabled = false;
+                lyricsBtn.disabled = false;
+            }
+        }
+
+        async function fetchOptimizedSunoPrompt(selectedStyleText, apiKey) {
+            const systemPrompt = `
+You are an expert SUNO prompt engineer.
+Convert the given selected music options into one polished SUNO prompt.
+Requirements:
+- Keep output concise and practical for SUNO.
+- Keep output under 500 characters.
+- Output only the final prompt text.
+            `.trim();
+
+            const userQuery = `
+Selected music style options:
+${selectedStyleText}
+            `.trim();
+
+            const response = await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        systemInstruction: {
+                            parts: [{ text: systemPrompt }]
+                        },
+                        contents: [
+                            {
+                                role: 'user',
+                                parts: [{ text: userQuery }]
+                            }
+                        ],
+                        generationConfig: {
+                            temperature: 0.7,
+                            topP: 0.95,
+                            maxOutputTokens: 600
+                        }
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data?.error?.message || `HTTP ${response.status}`);
+            }
+
+            const text = data?.candidates?.[0]?.content?.parts
+                ?.map(part => part.text || '')
+                .join('')
+                .trim();
+
+            if (!text) {
+                throw new Error('모델이 비어 있는 응답을 반환했습니다.');
+            }
+
+            return text.slice(0, 500);
         }
 
         async function generateLyricsOnly() {
