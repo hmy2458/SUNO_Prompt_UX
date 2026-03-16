@@ -21,33 +21,14 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-        }
+        .tag-chip { transition: all 0.2s; cursor: pointer; }
+        .tag-chip.active { background-color: #3b82f6; color: white; border-color: #3b82f6; }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-        }
-
-        .tag-chip {
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-
-        .tag-chip.active {
-            background-color: #3b82f6;
-            color: white;
-            border-color: #3b82f6;
-        }
-
-        input[type="range"] {
-            accent-color: #3b82f6;
-        }
+        input[type="range"] { accent-color: #3b82f6; }
 
         .category-title {
             font-size: 0.75rem;
@@ -60,11 +41,7 @@
             display: block;
         }
 
-        .menu-emphasis {
-            color: #ef4444;
-            font-size: 0.875rem;
-            font-weight: 700;
-        }
+        .menu-emphasis { color: #ef4444; font-size: 0.875rem; font-weight: 700; }
 
         .instrument-subtitle {
             font-size: 0.95rem;
@@ -85,12 +62,13 @@
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- 좌측 패널 -->
             <div class="lg:col-span-5 space-y-6">
+                <!-- 장르 및 스타일 -->
                 <section class="glass-panel p-5 rounded-2xl">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                         <i class="fas fa-compact-disc text-blue-400"></i> 장르 및 스타일
                     </h2>
-
                     <div class="space-y-4">
                         <div>
                             <label class="menu-emphasis block mb-2">Core Genre (필수)</label>
@@ -106,7 +84,6 @@
                                 <option value="Classical">Classical</option>
                             </select>
                         </div>
-
                         <div>
                             <label class="menu-emphasis block mb-2">Style / Sound Approach</label>
                             <select id="styleGenre" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 outline-none">
@@ -133,7 +110,6 @@
                                 <option value="Future Bass">Future Bass</option>
                             </select>
                         </div>
-
                         <div>
                             <label class="menu-emphasis block mb-2">Lyrical / Aesthetic Tag</label>
                             <div class="flex flex-wrap gap-2 mb-3" id="aestheticChips">
@@ -150,12 +126,12 @@
                     </div>
                 </section>
 
+                <!-- 분위기 -->
                 <section class="glass-panel p-5 rounded-2xl">
                     <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
                         <i class="fas fa-wind text-cyan-400"></i> 분위기 (Ambience)
                     </h2>
                     <p class="text-[10px] text-slate-500 mb-4">최대 3개 선택 권장</p>
-
                     <div class="space-y-4 text-sm h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                         <div>
                             <span class="category-title mt-0 menu-emphasis">Nature (Background Texture)</span>
@@ -168,7 +144,6 @@
                                 <label class="flex items-center gap-1.5"><input type="checkbox" value="Campfire" class="ambience-cb"> Campfire</label>
                             </div>
                         </div>
-
                         <div>
                             <span class="category-title menu-emphasis">Urban / Space (Sonic Coloration)</span>
                             <div class="grid grid-cols-2 gap-2">
@@ -177,7 +152,6 @@
                                 <label class="flex items-center gap-1.5"><input type="checkbox" value="Room ambience" class="ambience-cb"> Room ambience</label>
                             </div>
                         </div>
-
                         <div>
                             <span class="category-title menu-emphasis">Media / Texture (Light Layer)</span>
                             <div class="grid grid-cols-2 gap-2">
@@ -187,7 +161,6 @@
                                 <label class="flex items-center gap-1.5"><input type="checkbox" value="White noise" class="ambience-cb"> Noise</label>
                             </div>
                         </div>
-
                         <div>
                             <span class="category-title menu-emphasis">Groove</span>
                             <div class="grid grid-cols-2 gap-2">
@@ -205,7 +178,9 @@
                 </section>
             </div>
 
+            <!-- 우측 패널 -->
             <div class="lg:col-span-7 space-y-6">
+                <!-- 무드 & 템포 -->
                 <section class="glass-panel p-5 rounded-2xl">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
@@ -213,18 +188,16 @@
                                 <i class="fas fa-mask text-pink-400"></i> 무드 (Mood)
                             </h2>
                             <div class="space-y-4">
-                                <div>
-                                    <select id="moodType" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 outline-none">
-                                        <option>Joyful</option>
-                                        <option>Sad</option>
-                                        <option>Calm</option>
-                                        <option>Energetic</option>
-                                        <option>Aggressive</option>
-                                        <option>Romantic</option>
-                                        <option>Nostalgic</option>
-                                        <option>Dark</option>
-                                    </select>
-                                </div>
+                                <select id="moodType" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 outline-none">
+                                    <option>Joyful</option>
+                                    <option>Sad</option>
+                                    <option>Calm</option>
+                                    <option>Energetic</option>
+                                    <option>Aggressive</option>
+                                    <option>Romantic</option>
+                                    <option>Nostalgic</option>
+                                    <option>Dark</option>
+                                </select>
                                 <div>
                                     <label class="text-xs text-slate-500 block mb-1">Intensity</label>
                                     <input type="range" id="moodIntensity" min="1" max="3" step="1" value="2" class="w-full">
@@ -234,7 +207,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div>
                             <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                                 <i class="fas fa-music text-orange-400"></i> 템포 (Tempo)
@@ -250,11 +222,11 @@
                     </div>
                 </section>
 
+                <!-- 악기 구성 -->
                 <section class="glass-panel p-5 rounded-2xl">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                         <i class="fas fa-drum text-yellow-400"></i> 악기 구성 (Instruments)
                     </h2>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
                         <div class="space-y-3">
                             <span class="category-title mt-0 menu-emphasis">리듬악기</span>
@@ -294,7 +266,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="space-y-3">
                             <span class="category-title mt-0 menu-emphasis">하이라이트 악기 (Highlight)</span>
                             <div class="space-y-4">
@@ -345,15 +316,19 @@
             </div>
         </div>
 
+        <!-- 하단 결과 영역 -->
         <div class="mt-8 space-y-5 glass-panel p-5 rounded-2xl">
+
+            <!-- 선택한 스타일 출력 -->
             <section>
-                <button type="button" onclick="outputSelectedStyle()" id="selectedStyleBtn" class="w-full bg-cyan-600/90 hover:bg-cyan-500 text-white text-center rounded-md py-1.5 text-lg font-semibold mb-3 transition">선택한 음악 생성 스타일</button>
+                <button type="button" onclick="outputSelectedStyle()" class="w-full bg-cyan-600/90 hover:bg-cyan-500 text-white text-center rounded-md py-1.5 text-lg font-semibold mb-3 transition">선택한 음악 생성 스타일</button>
                 <div class="flex justify-end mb-2">
                     <button onclick="copyToClipboard('selectedStyleOutput')" class="text-sm px-4 py-1 bg-white/90 text-slate-900 rounded-md hover:bg-white transition">복사</button>
                 </div>
-                <textarea id="selectedStyleOutput" readonly class="w-full h-32 bg-slate-100 text-slate-900 rounded-xl p-3 border border-slate-300 text-sm resize-none custom-scrollbar"></textarea>
+                <textarea id="selectedStyleOutput" readonly class="w-full h-24 bg-slate-100 text-slate-900 rounded-xl p-3 border border-slate-300 text-sm resize-none custom-scrollbar"></textarea>
             </section>
 
+            <!-- API 키 -->
             <section class="glass-panel p-4 rounded-xl">
                 <h3 class="text-sm font-bold text-indigo-300 mb-2 flex items-center gap-2">
                     <i class="fas fa-key"></i> Gemini API 키 입력
@@ -365,40 +340,53 @@
                 <p class="text-[11px] text-slate-400 mt-2">입력한 키는 브라우저 로컬 저장소(localStorage)에만 저장됩니다.</p>
             </section>
 
+            <!-- 생성 버튼 -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <button onclick="generatePromptOnly()" id="generatePromptBtn" class="w-full bg-cyan-600 hover:bg-cyan-500 py-2 rounded-lg text-lg font-semibold shadow-lg transition-all">
                     Style Prompt 생성
                 </button>
                 <button onclick="generateLyricsOnly()" id="generateLyricsBtn" class="w-full bg-cyan-600 hover:bg-cyan-500 py-2 rounded-lg text-lg font-semibold shadow-lg transition-all">
-                    가사생성
+                    가사 생성
                 </button>
             </div>
 
+            <!-- 결과 출력 -->
             <div id="resultSection" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Style Prompt 결과 -->
                 <div class="space-y-2">
-                    <div class="flex justify-end">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wide">Style Prompt</span>
                         <button onclick="copyToClipboard('finalPrompt')" class="text-sm px-4 py-1 bg-white/90 text-slate-900 rounded-md hover:bg-white transition">복사</button>
                     </div>
-                    <textarea id="finalPrompt" readonly class="w-full h-56 bg-slate-100 text-slate-900 rounded-xl p-3 border border-slate-300 text-sm resize-none custom-scrollbar"></textarea>
-                    <p id="promptCharCount" class="text-right text-3xl leading-none text-slate-300">0 / 500 chars</p>
+                    <div class="relative">
+                        <div id="loadingPrompt" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-slate-900/90 rounded-xl z-10">
+                            <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-cyan-500 mb-2"></div>
+                            <span class="text-xs text-slate-400">프롬프트 생성 중...</span>
+                        </div>
+                        <textarea id="finalPrompt" readonly class="w-full h-56 bg-slate-100 text-slate-900 rounded-xl p-3 border border-slate-300 text-sm resize-none custom-scrollbar"></textarea>
+                    </div>
+                    <p id="promptCharCount" class="text-right text-sm leading-none text-slate-400">0 / 1000 chars</p>
                 </div>
 
+                <!-- 가사 결과 -->
                 <div class="space-y-2 relative">
-                    <div class="flex justify-end">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wide">가사</span>
                         <button onclick="copyToClipboard('finalLyrics')" class="text-sm px-4 py-1 bg-white/90 text-slate-900 rounded-md hover:bg-white transition">복사</button>
                     </div>
-
-                    <div id="loadingLyrics" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-slate-900/90 rounded-2xl z-10">
-                        <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-cyan-500 mb-2"></div>
-                        <span class="text-xs text-slate-400">가사 쓰는 중...</span>
+                    <div class="relative">
+                        <div id="loadingLyrics" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-slate-900/90 rounded-xl z-10">
+                            <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-cyan-500 mb-2"></div>
+                            <span class="text-xs text-slate-400">가사 쓰는 중...</span>
+                        </div>
+                        <textarea id="finalLyrics" readonly class="w-full h-56 bg-slate-100 text-slate-900 rounded-xl p-3 border border-slate-300 text-sm leading-relaxed custom-scrollbar resize-none"></textarea>
                     </div>
-
-                    <textarea id="finalLyrics" readonly class="w-full h-56 bg-slate-100 text-slate-900 rounded-xl p-3 border border-slate-300 text-sm leading-relaxed custom-scrollbar resize-none"></textarea>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Toast -->
     <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 px-8 py-4 rounded-full bg-cyan-600 text-white shadow-2xl opacity-0 transition-opacity pointer-events-none z-50 font-bold">
         복사되었습니다!
     </div>
@@ -406,37 +394,28 @@
     <script>
         const API_KEY_STORAGE_KEY = 'gemini_api_key';
 
+        // ── API 키 관리 ──────────────────────────────────────────
         function saveApiKey() {
             const key = document.getElementById('apiKeyInput').value.trim();
-            if (!key) {
-                showMessage('API 키를 입력해 주세요.');
-                return;
-            }
-
+            if (!key) { showMessage('API 키를 입력해 주세요.'); return; }
             localStorage.setItem(API_KEY_STORAGE_KEY, key);
             showMessage('API 키가 저장되었습니다.');
         }
 
         function getApiKey() {
             const inputKey = document.getElementById('apiKeyInput').value.trim();
-            if (inputKey) {
-                return inputKey;
-            }
-
+            if (inputKey) return inputKey;
             return localStorage.getItem(API_KEY_STORAGE_KEY) || '';
         }
 
         function hydrateApiKeyInput() {
             const saved = localStorage.getItem(API_KEY_STORAGE_KEY) || '';
-            if (saved) {
-                document.getElementById('apiKeyInput').value = saved;
-            }
+            if (saved) document.getElementById('apiKeyInput').value = saved;
         }
 
+        // ── UI 이벤트 ────────────────────────────────────────────
         document.querySelectorAll('.tag-chip').forEach(chip => {
-            chip.addEventListener('click', () => {
-                chip.classList.toggle('active');
-            });
+            chip.addEventListener('click', () => chip.classList.toggle('active'));
         });
 
         function setupLimit(selector, limit, name) {
@@ -462,9 +441,7 @@
             const toast = document.getElementById('toast');
             toast.innerText = msg;
             toast.style.opacity = '1';
-            setTimeout(() => {
-                toast.style.opacity = '0';
-            }, 2000);
+            setTimeout(() => { toast.style.opacity = '0'; }, 2000);
         }
 
         async function copyToClipboard(id) {
@@ -479,33 +456,24 @@
             }
         }
 
+        // ── 선택값 수집 ──────────────────────────────────────────
         function buildFinalPrompt() {
-            const core = document.getElementById('coreGenre').value;
+            const core  = document.getElementById('coreGenre').value;
             const style = document.getElementById('styleGenre').value;
 
-            const activeChips = Array.from(document.querySelectorAll('.tag-chip.active'))
-                .map(c => c.dataset.val);
-
+            const activeChips = Array.from(document.querySelectorAll('.tag-chip.active')).map(c => c.dataset.val);
             const customAesthetic = document.getElementById('customAesthetic').value.trim();
             const aesthetic = [...activeChips];
-            if (customAesthetic) {
-                aesthetic.push(...customAesthetic.split(',').map(s => s.trim()).filter(Boolean));
-            }
+            if (customAesthetic) aesthetic.push(...customAesthetic.split(',').map(s => s.trim()).filter(Boolean));
 
-            const ambiences = Array.from(document.querySelectorAll('.ambience-cb:checked'))
-                .map(c => c.value);
+            const ambiences = Array.from(document.querySelectorAll('.ambience-cb:checked')).map(c => c.value);
 
             const mood = document.getElementById('moodType').value;
             const intensityVal = Number(document.getElementById('moodIntensity').value);
-            const intensity =
-                intensityVal === 1 ? 'Low Intensity' :
-                intensityVal === 3 ? 'High Intensity' :
-                'Medium Intensity';
+            const intensity = intensityVal === 1 ? 'Low Intensity' : intensityVal === 3 ? 'High Intensity' : 'Medium Intensity';
 
             const tempo = document.getElementById('customTempo').value.trim() || 'Mid-tempo';
-
-            const instruments = Array.from(document.querySelectorAll('.inst-cb:checked'))
-                .map(c => c.value);
+            const instruments = Array.from(document.querySelectorAll('.inst-cb:checked')).map(c => c.value);
 
             const promptParts = [core];
             if (style) promptParts.push(style);
@@ -514,54 +482,68 @@
             promptParts.push(mood, intensity, tempo);
             if (instruments.length) promptParts.push(`featuring ${instruments.join(', ')}`);
 
-            return {
-                finalPrompt: promptParts.join(', '),
-                core,
-                mood
-            };
+            return { finalPrompt: promptParts.join(', '), core, mood, tempo, ambiences, instruments };
         }
 
         function updatePromptCharCount(text) {
-            const maxLen = 500;
-            document.getElementById('promptCharCount').innerText = `${text.length} / ${maxLen} chars`;
+            document.getElementById('promptCharCount').innerText = `${text.length} / 1000 chars`;
         }
 
         function outputSelectedStyle() {
             const { finalPrompt } = buildFinalPrompt();
             document.getElementById('selectedStyleOutput').value = finalPrompt;
-            document.getElementById('resultSection').classList.remove('hidden');
         }
 
+        // ── Gemini API 공통 호출 설정 ────────────────────────────
+        // thinkingBudget: 0 → thinking 토큰이 출력 토큰을 잡아먹는 문제 해결
+        // maxOutputTokens: 8000 → 충분한 출력 길이 확보
+        function buildGeminiBody(systemPrompt, userQuery, temperature = 0.7) {
+            return JSON.stringify({
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                contents: [{ role: 'user', parts: [{ text: userQuery }] }],
+                generationConfig: {
+                    temperature,
+                    topP: 0.95,
+                    maxOutputTokens: 8000
+                }
+            });
+        }
+
+        const GEMINI_URL = (apiKey) =>
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+        // ── Style Prompt 생성 ────────────────────────────────────
         async function generatePromptOnly() {
             const { finalPrompt } = buildFinalPrompt();
             const promptArea = document.getElementById('finalPrompt');
-            const promptBtn = document.getElementById('generatePromptBtn');
-            const lyricsBtn = document.getElementById('generateLyricsBtn');
-            const apiKey = getApiKey();
-
-            document.getElementById('resultSection').classList.remove('hidden');
+            const promptBtn  = document.getElementById('generatePromptBtn');
+            const lyricsBtn  = document.getElementById('generateLyricsBtn');
+            const loader     = document.getElementById('loadingPrompt');
+            const apiKey     = getApiKey();
 
             if (!apiKey) {
-                promptArea.value = '오류: API 키를 입력한 뒤 Style Prompt 생성을 다시 시도해 주세요.';
+                promptArea.value = '오류: API 키를 입력한 뒤 다시 시도해 주세요.';
                 updatePromptCharCount(promptArea.value);
                 showMessage('Style Prompt 생성에는 Gemini API 키가 필요합니다.');
                 return;
             }
 
-            promptArea.value = 'Style Prompt 생성 중...';
-            updatePromptCharCount(promptArea.value);
+            loader.classList.remove('hidden');
             promptBtn.disabled = true;
             lyricsBtn.disabled = true;
+            promptArea.value = '';
+            updatePromptCharCount('');
 
             try {
-                const optimizedPrompt = await fetchOptimizedSunoPrompt(finalPrompt, apiKey);
-                promptArea.value = optimizedPrompt;
-                updatePromptCharCount(optimizedPrompt);
+                const result = await fetchOptimizedSunoPrompt(finalPrompt, apiKey);
+                promptArea.value = result;
+                updatePromptCharCount(result);
             } catch (err) {
-                const message = `생성 실패: ${err?.message || String(err)}`;
-                promptArea.value = message;
-                updatePromptCharCount(message);
+                const msg = `생성 실패: ${err?.message || String(err)}`;
+                promptArea.value = msg;
+                updatePromptCharCount(msg);
             } finally {
+                loader.classList.add('hidden');
                 promptBtn.disabled = false;
                 lyricsBtn.disabled = false;
             }
@@ -569,87 +551,65 @@
 
         async function fetchOptimizedSunoPrompt(selectedStyleText, apiKey) {
             const systemPrompt = `
-You are an expert SUNO prompt engineer.
-Convert the given selected music options into one polished SUNO prompt.
-Requirements:
-- Keep output concise and practical for SUNO.
-- Keep output under 500 characters.
-- Output only the final prompt text.
+You are a professional music producer with 20+ years of experience across major labels.
+Your task is to translate selected music parameters into a precise, production-ready SUNO prompt.
+
+Think like a producer writing session notes:
+- Lead with the sonic identity (genre + production style)
+- Define the rhythmic foundation and groove feel
+- Specify texture, layering, and instrumental interplay
+- Describe the emotional arc and dynamic range
+- End with the vocal and mix character
+
+Output format rules:
+- Write as a flowing descriptor, NOT a list
+- Use industry-standard production terminology
+- Be specific: avoid vague words like "good" or "nice"
+- Aim for 500 to 600 characters
+- Output the final prompt text only, no explanation
             `.trim();
 
-            const userQuery = `
-Selected music style options:
-${selectedStyleText}
-            `.trim();
+            const userQuery = `Selected music style options:\n${selectedStyleText}`;
 
-            const response = await fetch(
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        systemInstruction: {
-                            parts: [{ text: systemPrompt }]
-                        },
-                        contents: [
-                            {
-                                role: 'user',
-                                parts: [{ text: userQuery }]
-                            }
-                        ],
-                        generationConfig: {
-                            temperature: 0.7,
-                            topP: 0.95,
-                            maxOutputTokens: 600
-                        }
-                    })
-                }
-            );
+            const response = await fetch(GEMINI_URL(apiKey), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: buildGeminiBody(systemPrompt, userQuery, 0.7)
+            });
 
             const data = await response.json();
+            if (!response.ok) throw new Error(data?.error?.message || `HTTP ${response.status}`);
 
-            if (!response.ok) {
-                throw new Error(data?.error?.message || `HTTP ${response.status}`);
-            }
+            const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('').trim();
+            if (!text) throw new Error('모델이 비어 있는 응답을 반환했습니다.');
 
-            const text = data?.candidates?.[0]?.content?.parts
-                ?.map(part => part.text || '')
-                .join('')
-                .trim();
-
-            if (!text) {
-                throw new Error('모델이 비어 있는 응답을 반환했습니다.');
-            }
-
-            return text.slice(0, 500);
+            return text.slice(0, 1000);
         }
 
+        // ── 가사 생성 ────────────────────────────────────────────
         async function generateLyricsOnly() {
             const apiKey = getApiKey();
             if (!apiKey) {
                 showMessage('Gemini API 키를 먼저 입력해 주세요.');
-                document.getElementById('resultSection').classList.remove('hidden');
                 document.getElementById('finalLyrics').value = '오류: API 키가 설정되지 않았습니다.';
                 return;
             }
 
             const { finalPrompt, core, mood } = buildFinalPrompt();
 
-            const limitedPrompt = finalPrompt.slice(0, 500);
-            document.getElementById('finalPrompt').value = limitedPrompt;
-            updatePromptCharCount(limitedPrompt);
-            document.getElementById('resultSection').classList.remove('hidden');
+            // UI에서 직접 수집 (buildFinalPrompt 반환값 보완)
+            const tempo       = document.getElementById('customTempo').value.trim() || 'Mid-tempo';
+            const ambience    = Array.from(document.querySelectorAll('.ambience-cb:checked')).map(c => c.value).join(', ') || 'None';
+            const instruments = Array.from(document.querySelectorAll('.inst-cb:checked')).map(c => c.value).join(', ') || 'None';
 
-            await fetchLyrics(finalPrompt, core, mood, apiKey);
+            await fetchLyrics(finalPrompt, core, mood, tempo, ambience, instruments, apiKey);
         }
 
-        async function fetchLyrics(musicStyle, genre, mood, apiKey) {
-            const loader = document.getElementById('loadingLyrics');
+        async function fetchLyrics(musicStyle, genre, mood, tempo, ambience, instruments, apiKey) {
+            const loader     = document.getElementById('loadingLyrics');
             const lyricsArea = document.getElementById('finalLyrics');
-            const promptBtn = document.getElementById('generatePromptBtn');
-            const lyricsBtn = document.getElementById('generateLyricsBtn');
+            const promptBtn  = document.getElementById('generatePromptBtn');
+            const lyricsBtn  = document.getElementById('generateLyricsBtn');
 
             loader.classList.remove('hidden');
             promptBtn.disabled = true;
@@ -657,11 +617,17 @@ ${selectedStyleText}
             lyricsArea.value = '';
 
             const systemPrompt = `
-You are an expert Korean songwriter.
-Write complete song lyrics in Korean.
-You may include only a few short English hook words if they fit naturally.
+You are a professional Korean lyricist and songwriter.
+Write complete song lyrics in Korean that authentically reflect the given music style.
 
-Required structure:
+The lyrics must reflect these musical elements:
+- Mood, tempo, and groove shape the emotional tone and rhythm of the words
+- Instruments influence the imagery and texture of the lyrics
+- Genre and style define the vocabulary, slang, and lyrical attitude
+- Ambience elements are woven into the scene-setting and storytelling
+
+Output structure:
+[Title] - one evocative Korean title with English translation in parentheses
 [Verse 1] - 4 lines
 [Chorus] - 4 lines
 [Verse 2] - 4 lines
@@ -670,70 +636,39 @@ Required structure:
 [Chorus] - 4 lines
 [Outro] - 2 to 4 lines
 
-Requirements:
-- Mood: ${mood}
+Writing rules:
 - Genre: ${genre}
-- Output lyrics only
-- Do not add explanations
-- Make the chorus catchy and memorable
-- Keep the wording singable and natural
+- Mood: ${mood}
+- Tempo: ${tempo} — match syllable flow and word rhythm accordingly
+- Ambience: ${ambience} — weave into scene-setting and storytelling
+- Instruments: ${instruments} — use as lyrical backdrop and imagery
+- Write in Korean, short English hooks allowed where natural
+- Chorus must be instantly memorable and singable
+- Output lyrics only, no explanations
 - Complete all sections without omission
             `.trim();
 
-            const userQuery = `
-Write song lyrics for this music style:
-${musicStyle}
-            `.trim();
+            const userQuery = `Write song lyrics for this music style:\n${musicStyle}`;
 
             const maxRetries = 3;
-            let lastErrorMessage = '알 수 없는 오류가 발생했습니다.';
+            let lastError = '알 수 없는 오류가 발생했습니다.';
 
             try {
                 for (let attempt = 1; attempt <= maxRetries; attempt++) {
                     try {
-                        const response = await fetch(
-                            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-                            {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    systemInstruction: {
-                                        parts: [{ text: systemPrompt }]
-                                    },
-                                    contents: [
-                                        {
-                                            role: 'user',
-                                            parts: [{ text: userQuery }]
-                                        }
-                                    ],
-                                    generationConfig: {
-                                        temperature: 0.9,
-                                        topP: 0.95,
-                                        maxOutputTokens: 3000
-                                    }
-                                })
-                            }
-                        );
+                        const response = await fetch(GEMINI_URL(apiKey), {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: buildGeminiBody(systemPrompt, userQuery, 0.9)
+                        });
 
                         const data = await response.json();
+                        if (!response.ok) throw new Error(data?.error?.message || `HTTP ${response.status} ${response.statusText}`);
 
-                        if (!response.ok) {
-                            const apiMessage =
-                                data?.error?.message ||
-                                `HTTP ${response.status} ${response.statusText}`;
-                            throw new Error(apiMessage);
-                        }
-
-                        const candidate = data?.candidates?.[0];
-                        const text = candidate?.content?.parts
-                            ?.map(part => part.text || '')
-                            .join('')
-                            .trim();
-
+                        const candidate  = data?.candidates?.[0];
+                        const text       = candidate?.content?.parts?.map(p => p.text || '').join('').trim();
                         const finishReason = candidate?.finishReason;
-                        const blockReason = data?.promptFeedback?.blockReason;
+                        const blockReason  = data?.promptFeedback?.blockReason;
 
                         if (blockReason) {
                             lyricsArea.value = `요청이 차단되었습니다. 사유: ${blockReason}`;
@@ -741,30 +676,23 @@ ${musicStyle}
                         }
 
                         if (text) {
-                            if (finishReason === 'MAX_TOKENS') {
-                                lyricsArea.value = `${text}\n\n[안내] 출력 길이 제한으로 가사가 일부 잘렸습니다. maxOutputTokens 값을 더 늘려 주세요.`;
-                            } else {
-                                lyricsArea.value = text;
-                            }
+                            lyricsArea.value = finishReason === 'MAX_TOKENS'
+                                ? `${text}\n\n[안내] 출력 길이 제한으로 가사가 일부 잘렸습니다.`
+                                : text;
                             return;
                         }
 
-                        if (finishReason) {
-                            throw new Error(`응답이 비어 있습니다. finishReason: ${finishReason}`);
-                        }
+                        throw new Error(finishReason
+                            ? `응답이 비어 있습니다. finishReason: ${finishReason}`
+                            : '모델이 비어 있는 응답을 반환했습니다.');
 
-                        throw new Error('모델이 비어 있는 응답을 반환했습니다.');
                     } catch (err) {
-                        lastErrorMessage = err?.message || String(err);
-
-                        if (attempt < maxRetries) {
-                            const delay = 1000 * attempt;
-                            await new Promise(resolve => setTimeout(resolve, delay));
-                        }
+                        lastError = err?.message || String(err);
+                        if (attempt < maxRetries) await new Promise(r => setTimeout(r, 1000 * attempt));
                     }
                 }
 
-                lyricsArea.value = `가사 생성 실패: ${lastErrorMessage}`;
+                lyricsArea.value = `가사 생성 실패: ${lastError}`;
             } finally {
                 loader.classList.add('hidden');
                 promptBtn.disabled = false;
