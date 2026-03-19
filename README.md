@@ -10,6 +10,8 @@ AI Music Create Prompt Generator (based GUI)
 4. Branch를 `main`(또는 사용하는 기본 브랜치), 폴더를 `/ (root)`로 선택 후 저장합니다.
 5. 발급된 Pages URL로 접속하면 `index.html`이 기본 페이지로 열립니다.
 
+This site is live at https://hmy2458.github.io/SUNO_Prompt_UX/
+
 예: `https://<github-username>.github.io/<repo-name>/`
 
 ---
